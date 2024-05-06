@@ -1,7 +1,12 @@
 import { useRef } from "react";
 import "../styleSheets/Calculator.css";
 
-const Calculator: React.FC = () => {
+interface Props {
+  theme: string
+  isLigth: (theme: string) => boolean
+}
+
+const Calculator: React.FC<Props> = ({theme, isLigth}) => {
   const inputTotal = useRef<HTMLInputElement>(null);
   const inputTip = useRef<HTMLSelectElement>(null);
   const inputPeople = useRef<HTMLInputElement>(null);
@@ -37,13 +42,13 @@ const Calculator: React.FC = () => {
     const totalPay = montoTotal + tipTotal;
     const perPerson = totalPay / peoples;
 
-     inputBillTotal.current!.value = totalPay.toString();
-     inputTipTotal.current!.value = tipTotal.toString();
-     inputPerPerson.current!.value = perPerson.toString();
+     inputBillTotal.current!.value = totalPay.toFixed(2).toString();
+     inputTipTotal.current!.value = tipTotal.toFixed(2).toString();
+     inputPerPerson.current!.value = perPerson.toFixed(2).toString();
   };
 
   return (
-    <section className="calculator">
+    <section className={isLigth(theme) ? 'calculator': 'calculator calculator__dark'}>
       <form className="form" role="form" onSubmit={calcularCheck}>
         <article className="info bill">
           <label htmlFor="inputBill">Factura Total :</label>
@@ -61,7 +66,7 @@ const Calculator: React.FC = () => {
           <label htmlFor="porcentTip">Porcentaje de propina :</label>
           <div className="info__input">
             <select name="porcent" id="porcentTip" ref={inputTip}>
-              <option value="" selected></option>
+              <option value=""></option>
               <option value="10">10</option>
               <option value="15">15</option>
               <option value="20">20</option>

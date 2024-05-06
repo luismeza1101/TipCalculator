@@ -7,4 +7,9 @@
     justify-content: center;
     align-items: center;
     gap: 70px;
+    transition: .5s;
+}
+.dark{
+    background-color: #2b2b2b;
+    color: #fff;
 }

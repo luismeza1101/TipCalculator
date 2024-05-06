@@ -47,3 +47,13 @@
 .btn:hover {
   background-color: #515151;
 }
+.calculator__dark{
+  background-color: #1a1919;
+}
+.calculator__dark .btn{
+  color: #000;
+  background-color: #ccc;
+}
+.calculator__dark .btn:hover{
+  background-color: #a9a7a7;
+}
