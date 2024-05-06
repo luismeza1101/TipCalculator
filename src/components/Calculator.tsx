@@ -1,15 +1,57 @@
+import { useRef } from "react";
 import "../styleSheets/Calculator.css";
 
-const Calculator = () => {
+const Calculator: React.FC = () => {
+  const inputTotal = useRef<HTMLInputElement>(null);
+  const inputTip = useRef<HTMLSelectElement>(null);
+  const inputPeople = useRef<HTMLInputElement>(null);
+  const inputBillTotal = useRef<HTMLInputElement>(null);
+  const inputPerPerson = useRef<HTMLInputElement>(null);
+  const inputTipTotal = useRef<HTMLInputElement>(null);
+
+  const calcularCheck = (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    const montoTotal = parseFloat(inputTotal.current!.value);
+    const montoTip = parseFloat(inputTip.current!.value)
+    const peoples = parseFloat(inputPeople.current!.value)
+
+    if(inputTotal.current?.value == '' || montoTotal <= 0){
+      alert('Debe completar la factura total o no puede ser menor o igual que 0')
+      return
+    } 
+    if(!(/^\d*\.?\d*$/.test(inputTotal.current!.value))){
+      alert('Debes ingresar numeros, no letras, y debe contener solo un punto(el decimal)')
+      return
+    }
+    if(inputTip.current?.value == ''){
+      alert('La propina debe ser minimo de un 10%')
+      return
+    } 
+
+    if(peoples <= 0){
+      alert('La cantidad de personas no puede ser menor a 1')
+      return
+    }
+    
+    const tipTotal = (montoTotal * montoTip) / 100;
+    const totalPay = montoTotal + tipTotal;
+    const perPerson = totalPay / peoples;
+
+     inputBillTotal.current!.value = totalPay.toString();
+     inputTipTotal.current!.value = tipTotal.toString();
+     inputPerPerson.current!.value = perPerson.toString();
+  };
+
   return (
     <section className="calculator">
-      <form className="form" role="form">
+      <form className="form" role="form" onSubmit={calcularCheck}>
         <article className="info bill">
           <label htmlFor="inputBill">Factura Total :</label>
           <div className="info__input">
             $
             <input
-              type="number"
+              ref={inputTotal}
+              type="text"
               id="inputBill"
               aria-label="Ingrese la factura total"
             />
@@ -18,19 +60,20 @@ const Calculator = () => {
         <article className="info porcent">
           <label htmlFor="porcentTip">Porcentaje de propina :</label>
           <div className="info__input">
-            <input
-              type="number"
-              id="porcentTip"
-              max={100}
-              aria-label="Ingrese el porcentaje de propina"
-            />
+            <select name="porcent" id="porcentTip" ref={inputTip}>
+              <option value="" selected></option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
             %
           </div>
         </article>
         <article className="info people">
           <label htmlFor="peoples">Cantidad de personas :</label>
           <input
-            type="text"
+            ref={inputPeople}
+            type="number"
             id="peoples"
             aria-label="Número de personas"
           />
@@ -40,6 +83,7 @@ const Calculator = () => {
           <div className="info__input">
             $
             <input
+              ref={inputTipTotal}
               type="text"
               readOnly
               id="montoTotalTip"
@@ -52,6 +96,7 @@ const Calculator = () => {
           <div className="info__input">
             $
             <input
+              ref={inputBillTotal}
               type="text"
               readOnly
               id="montoTotal"
@@ -64,6 +109,7 @@ const Calculator = () => {
           <div className="info__input">
             $
             <input
+              ref={inputPerPerson}
               type="text"
               readOnly
               id="montoTotalPerPerson"
@@ -72,8 +118,12 @@ const Calculator = () => {
           </div>
         </article>
         <section className="form__btn">
-          <button type="button" className="btn">Calcular</button>
-          <button type="reset" className="btn">Limpiar</button>
+          <button type="submit" className="btn">
+            Calcular
+          </button>
+          <button type="reset" className="btn">
+            Limpiar
+          </button>
         </section>
       </form>
     </section>

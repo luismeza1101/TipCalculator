@@ -15,7 +15,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
-.form input {
+.form input, form select{
   padding: 3px 5px;
   border-radius: 5px;
   border: 1px solid #000;
