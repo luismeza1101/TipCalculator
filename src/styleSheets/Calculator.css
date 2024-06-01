@@ -2,6 +2,7 @@
   background-color: #ccc;
   padding: 45px;
   border-radius: 10px;
+  max-width: 90%;
 }
 .form {
   display: flex;
